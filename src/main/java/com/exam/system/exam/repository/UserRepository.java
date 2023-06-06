@@ -8,6 +8,4 @@ import com.exam.system.exam.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     public User findByUsername(String username);
-
-    public void deleteUserByUsername(String username);
 }
