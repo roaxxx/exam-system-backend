@@ -1,14 +1,18 @@
 package com.exam.system.exam.model;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usuarios")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -165,6 +169,30 @@ public class User {
      */
     public void setUserRols(Set<UserRol> userRols) {
         this.userRols = userRols;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Authority> authorities = new HashSet<>();
+        this.userRols.forEach(userRol -> {
+            authorities.add(new Authority(userRol.getRol().getRolName()));
+        });
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
 }
