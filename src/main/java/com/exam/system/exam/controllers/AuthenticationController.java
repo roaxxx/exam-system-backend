@@ -1,5 +1,6 @@
 package com.exam.system.exam.controllers;
 
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,11 +9,13 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.exam.system.exam.model.JwtRequest;
 import com.exam.system.exam.model.JwtResponse;
+import com.exam.system.exam.model.User;
 import com.exam.system.exam.security.JwtUtil;
 import com.exam.system.exam.service.impl.UserDetailsServiceImpl;
 
@@ -53,5 +56,10 @@ public class AuthenticationController {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    @GetMapping("/actualUser")
+    public User getActualUser(Principal principal) {
+        return (User) this.userDetailsServiceImpl.loadUserByUsername(principal.getName());
     }
 }
