@@ -18,7 +18,6 @@ import com.exam.system.exam.service.UserService;
 
 @RestController
 @RequestMapping("users")
-@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
@@ -41,7 +40,7 @@ public class UserController {
         userRol.setUser(user);
         userRol.setRol(rol);
 
-	userRols.add(userRol);
+        userRols.add(userRol);
 
         return userService.saveUser(user, userRols);
     }
