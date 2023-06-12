@@ -30,18 +30,14 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> generateToken(@RequestBody JwtRequest jwtRequest) throws Exception {
-        System.out.println("Ha entrado en el end-point");
         try {
             authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
         } catch (UsernameNotFoundException exception) {
             exception.printStackTrace();
-            System.out.println("No se ha encontrado el usuario");
             throw new Exception("Usuario no encontrado");
         }
 
         UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(jwtRequest.getUsername());
-
-        System.out.println("Se esta imprimiendo el username->" + userDetails.getUsername());
         String token = this.jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
@@ -50,13 +46,10 @@ public class AuthenticationController {
         try {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            System.out.println("El usuario " + username + "la contrase{a} " + password);
         } catch (DisabledException disabledException) {
             disabledException.printStackTrace();
-            System.out.println("DisabledException");
         } catch (BadCredentialsException badCredentialsException) {
             badCredentialsException.printStackTrace();
-            System.out.println("BadCredentialsException");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
