@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.exam.system.exam.model.Rol;
-import com.exam.system.exam.model.User;
-import com.exam.system.exam.model.UserRol;
-import com.exam.system.exam.repository.UserRepository;
-import com.exam.system.exam.service.UserService;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.exam.system.exam.configuration.CorsConfiguration;
 
 @SpringBootApplication
+@Import(CorsConfiguration.class)
 public class ExamSystemBackendApplication implements CommandLineRunner {
 
 	@Autowired
-	private UserService userService;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExamSystemBackendApplication.class, args);
@@ -24,7 +23,10 @@ public class ExamSystemBackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
 		/*
+		 * System.out.println("Contraseña: " +
+		 * bCryptPasswordEncoder.encode("abcd1234"));
 		 * User user = new User();
 		 * user.setName("William");
 		 * user.setSurname("Roa");
